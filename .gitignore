@@ -5,3 +5,4 @@ __pycache__/
 *.pyc
 *.xlsx
 *.tar.gz
+.gitignore
