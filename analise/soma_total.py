@@ -38,7 +38,7 @@ def analisar_soma():
     print(f"   {media + 1*dp:.0f} a {media + 2*dp:.0f}: {sum(1 for s in somas if media + dp <= s < media + 2*dp)} sorteios")
     print(f"   {media + 2*dp:.0f} a {media + 3*dp:.0f}: {sum(1 for s in somas if media + 2*dp <= s < media + 3*dp)} sorteios")
     
-    return {'media': media, 'dp': dp, 'q1': q1, 'q3': q3, 'min': minimo, 'max': maximo}
+    return {'somas': somas, 'media': media, 'dp': dp, 'q1': q1, 'q3': q3, 'min': minimo, 'max': maximo}
 
 if __name__ == "__main__":
     analisar_soma()

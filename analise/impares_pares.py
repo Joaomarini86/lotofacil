@@ -26,5 +26,7 @@ def analisar_impares_pares():
     moda = distribuicao.most_common(1)[0]
     print(f"\n📌 Mais comum: {moda[0][0]} ímpares + {moda[0][1]} pares ({moda[1]/total*100:.1f}%)")
 
+    return distribuicao, total
+
 if __name__ == "__main__":
     analisar_impares_pares()

@@ -41,7 +41,7 @@ def carregar_dados(janela=0):
                 break
             atraso += 1
         bonus = 0.20 if num in ultimos_numeros else 0
-        scores[num] = freq * 0.30 + (1 - 0.4**atraso) * 0.50 + bonus * 0.20
+        scores[num] = freq * 0.45 + (1 - 0.4**atraso) * 0.30 + bonus * 0.25
     
     return scores, ultimos_numeros, len(df), label
 
