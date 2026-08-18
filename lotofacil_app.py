@@ -96,8 +96,8 @@ def carregar_dados(janela=0):
 
 def gerar_jogo_com_fadiga(scores_dinamicos, semente_base, fator_fadiga=0.7):
     """
-    Gera um jogo aplicando filtros rigorosos:
-    Paridade, Moldura, Primos, Fibonacci, Soma, Limite de Sequência e Fator de Fadiga.
+    Gera um jogo aplicando filtros com margem de respiro para evitar overfitting:
+    Paridade, Moldura (8-12), Primos (4-7), Fibonacci (3-6), Soma e Limite de Sequência.
     """
     np.random.seed(semente_base)
     dezenas = list(scores_dinamicos.keys())
@@ -117,31 +117,30 @@ def gerar_jogo_com_fadiga(scores_dinamicos, semente_base, fator_fadiga=0.7):
         jogo_set = set(jogo_candidato) 
         
         # ---------------------------------------------------------
-        # FILTROS DE REALIDADE
+        # FILTROS FLEXIBILIZADOS (Buscando o teto de 14/15 pontos)
         # ---------------------------------------------------------
         
-        # 1. PARIDADE (7, 8 ou 9 ímpares)
+        # 1. PARIDADE (Mantida: 7, 8 ou 9 ímpares)
         qtd_impares = sum(1 for n in jogo_candidato if n % 2 != 0)
         if qtd_impares not in [7, 8, 9]: continue 
             
-        # 2. MOLDURA (De 8 a 11 dezenas na borda)
+        # 2. MOLDURA (Expandida: De 8 a 12 dezenas na borda)
         qtd_moldura = len(jogo_set.intersection(DEZENAS_MOLDURA))
-        if not (8 <= qtd_moldura <= 11): continue
+        if not (8 <= qtd_moldura <= 12): continue
             
-        # 3. PRIMOS (De 4 a 6 números primos)
+        # 3. PRIMOS (Expandida: De 4 a 7 números primos)
         qtd_primos = len(jogo_set.intersection(DEZENAS_PRIMOS))
-        if not (4 <= qtd_primos <= 6): continue
+        if not (4 <= qtd_primos <= 7): continue
             
-        # 4. FIBONACCI (De 3 a 5 números de Fibonacci)
+        # 4. FIBONACCI (Expandida: De 3 a 6 números de Fibonacci)
         qtd_fibo = len(jogo_set.intersection(DEZENAS_FIBONACCI))
-        if not (3 <= qtd_fibo <= 5): continue
+        if not (3 <= qtd_fibo <= 6): continue
             
-        # 5. SOMA HISTÓRICA (159 a 231)
+        # 5. SOMA HISTÓRICA (Mantida: 159 a 231)
         soma_jogo = sum(jogo_candidato)
         if not (159 <= soma_jogo <= 231): continue 
             
-        # 6. LIMITE DE SEQUÊNCIA MÁXIMA (Escudo Anti-Anomalia)
-        # Conta qual é a maior "tripa" de números seguidos no jogo candidato
+        # 6. LIMITE DE SEQUÊNCIA MÁXIMA (Mantida: Escudo Anti-Anomalia Extrema)
         maior_seq = 1
         seq_atual = 1
         for i in range(1, len(jogo_candidato)):
@@ -152,7 +151,7 @@ def gerar_jogo_com_fadiga(scores_dinamicos, semente_base, fator_fadiga=0.7):
             else:
                 seq_atual = 1
                 
-        # Se encontrou mais de 8 números seguidos ininterruptos, descarta o jogo
+        # Continua barrando tripas maiores que 8 números
         if maior_seq > 8: 
             continue
             
